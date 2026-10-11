@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Paseo por las Nubes - Para Liliana ☁️✨</title>
+  <!-- Google Fonts: Quicksand & Nunito -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&family=Quicksand:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ==========================================
+       ESTILOS GLOBALES Y VARIABLES
+       ========================================== */
+    :root {
+      --font-primary: 'Quicksand', 'Nunito', sans-serif;
+      --font-body: 'Nunito', 'Quicksand', sans-serif;
+      --bg-gradient: linear-gradient(180deg, #1b1528 0%, #2c2043 30%, #4c3363 60%, #7d4f7c 85%, #b47999 100%);
+      --cloud-white: rgba(255, 255, 255, 0.92);
+      --cloud-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+      --accent-pink: #ffd1dc;
+      --accent-lavender: #e6e6fa;
+      --accent-gold: #ffeaa7;
+      --text-dark: #2d2238;
+      --text-muted: #625272;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body, html {
+      width: 100%;
+      min-height: 100vh;
+      font-family: var(--font-primary);
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: #ffffff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* ==========================================
+       FONDO DE ESTRELLAS Y NUBES DECORATIVAS
+       ========================================== */
+    #stars-canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .bg-clouds-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 2;
+      overflow: hidden;
+    }
+
+    .bg-cloud {
+      position: absolute;
+      fill: rgba(255, 255, 255, 0.12);
+      filter: blur(4px);
+      animation: floatBgCloud linear infinite;
+    }
+
+    .bg-cloud-1 {
+      top: 8%;
+      width: 260px;
+      animation-duration: 55s;
+      animation-delay: 0s;
+    }
+    .bg-cloud-2 {
+      top: 35%;
+      width: 320px;
+      animation-duration: 75s;
+      animation-delay: -20s;
+    }
+    .bg-cloud-3 {
+      top: 65%;
+      width: 220px;
+      animation-duration: 60s;
+      animation-delay: -35s;
+    }
+
+    @keyframes floatBgCloud {
+      0% { transform: translateX(-350px); }
+      100% { transform: translateX(100vw); }
+    }
+
+    /* ==========================================
+       PANTALLA DE INICIO (OVERLAY TRANSLÚCIDO)
+       ========================================== */
+    #welcome-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(23, 17, 36, 0.88);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      text-align: center;
+      transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
+    }
+
+    #welcome-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .welcome-card {
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.05));
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 28px;
+      padding: 2.5rem 1.8rem;
+      max-width: 380px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+      animation: pulseWelcome 3s infinite ease-in-out;
+    }
+
+    @keyframes pulseWelcome {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+
+    .moon-icon {
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      display: inline-block;
+      filter: drop-shadow(0 0 15px rgba(255, 234, 167, 0.6));
+      animation: moonFloat 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes moonFloat {
+      from { transform: translateY(0px) rotate(-5deg); }
+      to { transform: translateY(-10px) rotate(5deg); }
+    }
+
+    .welcome-title {
+      font-size: 1.65rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.8rem;
+      line-height: 1.3;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .welcome-subtitle {
+      font-size: 0.98rem;
+      color: var(--accent-lavender);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+      font-family: var(--font-body);
+      font-weight: 400;
+      opacity: 0.9;
+    }
+
+    .btn-enter {
+      background: linear-gradient(135deg, #ffd1dc 0%, #e6e6fa 100%);
+      color: var(--text-dark);
+      border: none;
+      padding: 1.1rem 2rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      font-family: var(--font-primary);
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 209, 220, 0.4);
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .btn-enter:active {
+      transform: scale(0.96);
+      box-shadow: 0 4px 15px rgba(255, 209, 220, 0.3);
+    }
+
+    /* ==========================================
+       ESTRUCTURA PRINCIPAL Y ENCABEZADO
+       ========================================== */
+    .app-container {
+      position: relative;
+      z-index: 10;
+      max-width: 480px;
+      margin: 0 auto;
+      padding: 2.5rem 1.2rem 5rem 1.2rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 2.2rem;
+      animation: fadeInDown 1.2s ease-out;
+    }
+
+    .header-tag {
+      display: inline-block;
+      padding: 0.35rem 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      font-size: 0.82rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--accent-pink);
+      margin-bottom: 0.6rem;
+      backdrop-filter: blur(5px);
+    }
+
+    .header-title {
+      font-size: 1.95rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    }
+
+    .header-instruction {
+      font-size: 1.15rem;
+      color: var(--accent-gold);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      animation: softGlow 2.5s infinite alternate;
+    }
+
+    @keyframes softGlow {
+      from { text-shadow: 0 0 5px rgba(255, 234, 167, 0.3); opacity: 0.85; }
+      to { text-shadow: 0 0 18px rgba(255, 234, 167, 0.9); opacity: 1; }
+    }
+
+    /* ==========================================
+       REJILLA DE NUBES INTERACTIVAS (10 NUBES)
+       ========================================== */
+    .clouds-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1.3rem;
+      width: 100%;
+    }
+
+    .cloud-card {
+      position: relative;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(240, 235, 250, 0.88) 100%);
+      border-radius: 28px;
+      padding: 1.3rem 1.5rem;
+      color: var(--text-dark);
+      cursor: pointer;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.25), inset 0 2px 4px rgba(255, 255, 255, 0.9);
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.35s ease, background 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      /* Animación sutil individual para dar sensación flotante */
+      animation: floatCloudItem 5s ease-in-out infinite alternate;
+    }
+
+    .cloud-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      pointer-events: none;
+    }
+
+    .cloud-card:active {
+      transform: scale(0.97);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+    }
+
+    .cloud-card.opened {
+      border: 1.5px solid #a894cc;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.98) 0%, rgba(235, 225, 250, 0.95) 100%);
+    }
+
+    .cloud-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .cloud-icon-wrapper {
+      width: 48px;
+      height: 48px;
+      background: linear-gradient(135deg, #e3d5ff 0%, #ffd6e8 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 12px rgba(120, 80, 160, 0.15);
+      flex-shrink: 0;
+    }
+
+    .cloud-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .cloud-number {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #8c68ab;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 0.15rem;
+    }
+
+    .cloud-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      line-height: 1.25;
+    }
+
+    .cloud-arrow {
+      width: 32px;
+      height: 32px;
+      background: rgba(140, 104, 171, 0.1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #8c68ab;
+      font-size: 0.9rem;
+      transition: transform 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .cloud-card:active .cloud-arrow {
+      transform: translateX(4px);
+    }
+
+    /* Staggered Floating Delays para efecto orgánico de cielo */
+    .cloud-card:nth-child(1) { animation-delay: 0s; animation-duration: 4.5s; }
+    .cloud-card:nth-child(2) { animation-delay: -0.8s; animation-duration: 5.2s; }
+    .cloud-card:nth-child(3) { animation-delay: -1.6s; animation-duration: 4.8s; }
+    .cloud-card:nth-child(4) { animation-delay: -2.4s; animation-duration: 5.5s; }
+    .cloud-card:nth-child(5) { animation-delay: -0.5s; animation-duration: 4.9s; }
+    .cloud-card:nth-child(6) { animation-delay: -1.2s; animation-duration: 5.3s; }
+    .cloud-card:nth-child(7) { animation-delay: -2.0s; animation-duration: 4.6s; }
+    .cloud-card:nth-child(8) { animation-delay: -2.8s; animation-duration: 5.1s; }
+    .cloud-card:nth-child(9) { animation-delay: -1.0s; animation-duration: 4.7s; }
+    .cloud-card:nth-child(10) { animation-delay: -2.2s; animation-duration: 5.4s; }
+
+    @keyframes floatCloudItem {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-7px); }
+    }
+
+    /* ==========================================
+       MODAL DE TARJETA CON MENSAJE
+       ========================================== */
+    #cloud-modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(15, 10, 25, 0.78);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+    }
+
+    #cloud-modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-card {
+      background: linear-gradient(165deg, #ffffff 0%, #f7efff 60%, #fff0f5 100%);
+      border-radius: 32px;
+      padding: 2.2rem 1.8rem;
+      max-width: 420px;
+      width: 100%;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5), inset 0 2px 5px rgba(255, 255, 255, 0.8);
+      color: var(--text-dark);
+      position: relative;
+      transform: scale(0.85) translateY(20px);
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    #cloud-modal-overlay.active .modal-card {
+      transform: scale(1) translateY(0);
+    }
+
+    .modal-header-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: #f0e6ff;
+      color: #704499;
+      padding: 0.35rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+    }
+
+    .modal-quote-box {
+      background: linear-gradient(135deg, rgba(240, 224, 255, 0.5) 0%, rgba(255, 225, 240, 0.5) 100%);
+      border-left: 4px solid #b388ff;
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.4rem;
+    }
+
+    .modal-quote-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #8356ad;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 0.3rem;
+    }
+
+    .modal-quote-text {
+      font-size: 0.98rem;
+      font-weight: 700;
+      color: #443157;
+      font-style: italic;
+      line-height: 1.4;
+    }
+
+    .modal-message-box {
+      margin-bottom: 2rem;
+    }
+
+    .modal-message-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #8c68ab;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .modal-message-text {
+      font-size: 1.02rem;
+      line-height: 1.65;
+      color: #362947;
+      font-family: var(--font-body);
+      font-weight: 400;
+    }
+
+    .btn-close-modal {
+      background: linear-gradient(135deg, #7c5299 0%, #563870 100%);
+      color: #ffffff;
+      border: none;
+      padding: 1rem 1.8rem;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: var(--font-primary);
+      border-radius: 50px;
+      cursor: pointer;
+      width: 100%;
+      box-shadow: 0 8px 20px rgba(86, 56, 112, 0.35);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .btn-close-modal:active {
+      transform: scale(0.97);
+      box-shadow: 0 4px 12px rgba(86, 56, 112, 0.2);
+    }
+
+    /* ==========================================
+       CONTROL FLOTANTE DE MÚSICA & PIE DE PÁGINA
+       ========================================== */
+    .music-bar {
+      position: fixed;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 100;
+      background: rgba(25, 18, 38, 0.82);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 30px;
+      padding: 0.55rem 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      transition: all 0.3s ease;
+      max-width: 90vw;
+    }
+
+    .music-info {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.85rem;
+      color: var(--accent-lavender);
+    }
+
+    .music-icon {
+      font-size: 1rem;
+      animation: spinMusic 8s linear infinite;
+    }
+
+    @keyframes spinMusic {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .music-toggle-btn {
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      color: #ffffff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 0.3rem 0.7rem;
+      border-radius: 15px;
+      cursor: pointer;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 3rem;
+      padding-bottom: 2rem;
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.6);
+      line-height: 1.5;
+    }
+
+    footer p span {
+      color: var(--accent-pink);
+    }
+
+    /* IFRAME OCULTO DE YOUTUBE */
+    #youtube-player-container {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      opacity: 0;
+      pointer-events: none;
+      overflow: hidden;
+      top: -9999px;
+      left: -9999px;
+    }
+
+    /* Animación de entrada */
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CANVAS DE ESTRELLAS DE FONDO -->
+  <canvas id="stars-canvas"></canvas>
+
+  <!-- NUBES DECORATIVAS DE FONDO (SVG) -->
+  <div class="bg-clouds-container">
+    <svg class="bg-cloud bg-cloud-1" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+    <svg class="bg-cloud bg-cloud-2" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+    <svg class="bg-cloud bg-cloud-3" viewBox="0 0 24 24"><path d="M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+  </div>
+
+  <!-- PANTALLA INICIAL TRANSLÚCIDA -->
+  <div id="welcome-overlay">
+    <div class="welcome-card">
+      <div class="moon-icon">🌙✨</div>
+      <h1 class="welcome-title">Para que duermas tranquila, Liliana</h1>
+      <p class="welcome-subtitle">Un espacio suave e inspirador en las nubes preparado con todo el amor para que descanses esta noche.</p>
+      <button id="btn-enter" class="btn-enter">
+        <span>Cierra los ojos y entra</span> ➔
+      </button>
+    </div>
+  </div>
+
+  <!-- APLICACIÓN PRINCIPAL -->
+  <div class="app-container">
+    <header>
+      <span class="header-tag">Paseo por las Nubes ☁️</span>
+      <h1 class="header-title">Dulces Sueños</h1>
+      <p class="header-instruction">
+        <span>✨ Toca una nube antes de dormir ✨</span>
+      </p>
+    </header>
+
+    <!-- LISTA / REJILLA DE 10 NUBES INTERACTIVAS -->
+    <main class="clouds-grid" id="clouds-grid">
+      <!-- Nube 1 -->
+      <article class="cloud-card" data-cloud="1">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">☁️</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 01</span>
+            <h2 class="cloud-title">Camino en las nubes</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 2 -->
+      <article class="cloud-card" data-cloud="2">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">🌙</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 02</span>
+            <h2 class="cloud-title">Agradezco al tiempo</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 3 -->
+      <article class="cloud-card" data-cloud="3">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">✨</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 03</span>
+            <h2 class="cloud-title">Amor puro y natural</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 4 -->
+      <article class="cloud-card" data-cloud="4">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">💖</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 04</span>
+            <h2 class="cloud-title">Mi niña bonita</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 5 -->
+      <article class="cloud-card" data-cloud="5">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">🕊️</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 05</span>
+            <h2 class="cloud-title">Suelta el peso de hoy</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 6 -->
+      <article class="cloud-card" data-cloud="6">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">🌷</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 06</span>
+            <h2 class="cloud-title">Tu lugar seguro</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 7 -->
+      <article class="cloud-card" data-cloud="7">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">🌌</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 07</span>
+            <h2 class="cloud-title">El sueño repara y sana</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 8 -->
+      <article class="cloud-card" data-cloud="8">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">⭐</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 08</span>
+            <h2 class="cloud-title">Bello detalle</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 9 -->
+      <article class="cloud-card" data-cloud="9">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">💌</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 09</span>
+            <h2 class="cloud-title">Permiso para soñar</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+
+      <!-- Nube 10 -->
+      <article class="cloud-card" data-cloud="10">
+        <div class="cloud-left">
+          <div class="cloud-icon-wrapper">💫</div>
+          <div class="cloud-info">
+            <span class="cloud-number">Nube 10</span>
+            <h2 class="cloud-title">Amarte por siempre</h2>
+          </div>
+        </div>
+        <div class="cloud-arrow">➔</div>
+      </article>
+    </main>
+
+    <footer>
+      <p>Inspirado en <span>Mi Niña Bonita</span> • Hecho con todo el amor para Liliana 🌸</p>
+    </footer>
+  </div>
+
+  <!-- MODAL PARA MOSTRAR LA FRASE Y EL MENSAJE DE LA NUBE -->
+  <div id="cloud-modal-overlay" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true">
+      <div class="modal-header-badge" id="modal-badge">
+        <span>☁️</span> <span id="modal-cloud-num">Nube 1</span>
+      </div>
+
+      <div class="modal-quote-box">
+        <div class="modal-quote-tag">Mi Niña Bonita 🎵</div>
+        <p class="modal-quote-text" id="modal-quote"></p>
+      </div>
+
+      <div class="modal-message-box">
+        <div class="modal-message-title">Para ti, Liliana 💌</div>
+        <p class="modal-message-text" id="modal-message"></p>
+      </div>
+
+      <button id="btn-close-modal" class="btn-close-modal">
+        <span>Cerrar y volver al cielo</span> 🌙
+      </button>
+    </div>
+  </div>
+
+  <!-- REPRODUCTOR DE AUDIO HTML5 -->
+  <audio id="bg-audio" preload="auto" loop>
+    <source src="cancion.mp3" type="audio/mpeg">
+    <source src="Chino & Nacho - Niña Bonita.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- CONTROL DE MÚSICA FLOTANTE -->
+  <div class="music-bar" id="music-bar" style="display: none;">
+    <div class="music-info">
+      <span class="music-icon">🎵</span>
+      <span>Mi Niña Bonita</span>
+    </div>
+    <button class="music-toggle-btn" id="music-toggle-btn">Pausar</button>
+  </div>
+
+  <!-- LÓGICA JAVASCRIPT -->
+  <script>
+    // DATOS DE LAS 10 NUBES
+    const cloudsData = {
+      1: {
+        quote: "Este amor que como espuma sube / Camino en las nubes...",
+        message: "Sé que estás muy cansada últimamente y está bien. Descansa todo lo que necesites. Mientras tú duermes, yo sigo caminando en las nubes desde que te conocí."
+      },
+      2: {
+        quote: "Le agradezco al tiempo / Que me ha demostrado que las cosas buenas llegan...",
+        message: "Como futura psicóloga sabes lo importante que es el descanso para la mente, y como catequista sabes que Dios también nos regala el sueño para reponer fuerzas. Duerme tranquila, que yo agradezco todos los días que hayas llegado a mi vida."
+      },
+      3: {
+        quote: "Un amor puro y natural / Digno de admirar...",
+        message: "No importa si hoy no tuvimos mucha energía para hablar o si te quedaste dormida temprano. Admiro tu esfuerzo de cada día y me encanta cuidarte, incluso a la distancia."
+      },
+      4: {
+        quote: "Y que sin tu amor no viviría / Mi niña bonita...",
+        message: "Apaga la pantalla, ponte cómoda y ten los sueños más lindos. Aquí estoy y aquí me quedo. Buenas noches, mi niña bonita."
+      },
+      5: {
+        quote: "Parece mentira que ya no recuerdo nada / Cuando solo estuve...",
+        message: "A veces los días son tan pesados que la batería simplemente no da más. Quiero que sepas que acompañarte, a tu ritmo y en tu tranquilidad, es lo que me hace más feliz. Duerme y suelta el peso de hoy."
+      },
+      6: {
+        quote: "Nada se podrá comparar / Con algo tan especial...",
+        message: "Tu paz es lo más especial para mí. Si hoy necesitas dormir muchísimas horas para recuperar tu energía, hazlo sin culpa. Yo estaré aquí, siendo tu lugar seguro mientras descansas."
+      },
+      7: {
+        quote: "Yo no imaginaba que conocería algún día / Este sentimiento...",
+        message: "Como futura psicóloga, sabes mejor que nadie que el sueño repara y sana. Me llena de tranquilidad saber que tienes la confianza de mostrarte así de cansada conmigo. Descansa, Liliana."
+      },
+      8: {
+        quote: "Un amor de fantasía lleno de romance y alegría / De bellos detalles cada día...",
+        message: "Un bello detalle hoy es darte todo el espacio para dormir. Dios nos pide que cuidemos nuestro cuerpo y nuestra mente. Deja que el silencio se lleve cualquier estrés de la universidad o la catequesis."
+      },
+      9: {
+        quote: "¿Cómo sabría que esto pasaría? / Que ibas a ser mía y que yo querría...",
+        message: "Quiero cuidarte siempre, y eso empieza por entender y abrazar tu agotamiento. No te exijas de más, hoy solo tienes permiso para soñar y recargar tu corazón."
+      },
+      10: {
+        quote: "(Amarte siempre) amarte por siempre / Mi niña bonita...",
+        message: "Que esta noche te abrace suavemente y te traiga la paz que necesitas. No tienes que responder a esto. Cierra los ojitos, te quiero muchísimo mi niña bonita."
+      }
+    };
+
+    // GENERADOR DE ESTRELLAS PARPADEANTES EN CANVAS
+    function initStars() {
+      const canvas = document.getElementById('stars-canvas');
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const stars = [];
+      const numStars = Math.floor((width * height) / 3000);
+
+      for (let i = 0; i < numStars; i++) {
+        stars.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          radius: Math.random() * 1.5 + 0.5,
+          alpha: Math.random(),
+          speed: Math.random() * 0.015 + 0.005,
+          dir: Math.random() > 0.5 ? 1 : -1
+        });
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, width, height);
+        stars.forEach(star => {
+          star.alpha += star.speed * star.dir;
+          if (star.alpha >= 1) { star.alpha = 1; star.dir = -1; }
+          if (star.alpha <= 0.2) { star.alpha = 0.2; star.dir = 1; }
+
+          ctx.beginPath();
+          ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(255, 255, 255, ${star.alpha})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+    }
+
+    // MANEJO DE AUDIO MP3 LOCAL
+    let isPlaying = false;
+    const bgAudio = document.getElementById('bg-audio');
+    const musicBar = document.getElementById('music-bar');
+    const musicToggleBtn = document.getElementById('music-toggle-btn');
+
+    function playMusic() {
+      if (!bgAudio) return;
+      // Iniciar desde el segundo 59 (minuto 00:59)
+      bgAudio.currentTime = 59;
+      
+      bgAudio.play().then(() => {
+        isPlaying = true;
+        musicBar.style.display = 'flex';
+        musicToggleBtn.textContent = 'Pausar';
+      }).catch(err => {
+        console.log('Error o bloqueo al reproducir audio:', err);
+      });
+    }
+
+    // Al reiniciar el audio en bucle, que vuelva al segundo 59
+    bgAudio.addEventListener('ended', () => {
+      bgAudio.currentTime = 59;
+      bgAudio.play();
+    });
+
+    musicToggleBtn.addEventListener('click', () => {
+      if (!bgAudio) return;
+
+      if (isPlaying) {
+        bgAudio.pause();
+        musicToggleBtn.textContent = 'Reproducir';
+        isPlaying = false;
+      } else {
+        bgAudio.play();
+        musicToggleBtn.textContent = 'Pausar';
+        isPlaying = true;
+      }
+    });
+
+    // ELEMENTOS DOM PARA INTERACCIÓN
+    const welcomeOverlay = document.getElementById('welcome-overlay');
+    const btnEnter = document.getElementById('btn-enter');
+    const modalOverlay = document.getElementById('cloud-modal-overlay');
+    const modalCloudNum = document.getElementById('modal-cloud-num');
+    const modalQuote = document.getElementById('modal-quote');
+    const modalMessage = document.getElementById('modal-message');
+    const btnCloseModal = document.getElementById('btn-close-modal');
+
+    // BOTÓN PANTALLA INICIAL
+    btnEnter.addEventListener('click', () => {
+      welcomeOverlay.classList.add('hidden');
+      playMusic();
+    });
+
+    // ABRIR MODAL DE NUBE
+    document.querySelectorAll('.cloud-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const cloudId = card.getAttribute('data-cloud');
+        const data = cloudsData[cloudId];
+
+        if (data) {
+          card.classList.add('opened');
+          modalCloudNum.textContent = `Nube ${cloudId}`;
+          modalQuote.textContent = `« ${data.quote} »`;
+          modalMessage.textContent = data.message;
+          
+          modalOverlay.classList.add('active');
+          modalOverlay.setAttribute('aria-hidden', 'false');
+        }
+      });
+    });
+
+    // CERRAR MODAL DE NUBE
+    function closeModal() {
+      modalOverlay.classList.remove('active');
+      modalOverlay.setAttribute('aria-hidden', 'true');
+    }
+
+    btnCloseModal.addEventListener('click', closeModal);
+
+    // CERRAR TAP EN EL FONDO OSCURO DEL MODAL
+    modalOverlay.addEventListener('click', (e) => {
+      if (e.target === modalOverlay) {
+        closeModal();
+      }
+    });
+
+    // INICIALIZACIÓN
+    document.addEventListener('DOMContentLoaded', () => {
+      initStars();
+    });
+  </script>
+</body>
+</html>
